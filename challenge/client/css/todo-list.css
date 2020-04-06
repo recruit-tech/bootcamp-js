@@ -1,0 +1,124 @@
+.todo-list__wrapper {
+  display: flex;
+  padding-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-list {
+  width: 500px;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: flex-start;
+  width: 500px;
+  height: 60px;
+  line-height: 60px;
+  background: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  border-collapse: collapse;
+}
+
+.todo-item:last-child {
+  display: flex;
+  justify-content: flex-start;
+  width: 500px;
+  height: 60px;
+  line-height: 60px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid lightgray;
+  border-collapse: collapse;
+}
+
+.todo-toggle {
+  height: 40px;
+  width: 40px;
+  margin: 0;
+  border: none;
+}
+
+.todo-name {
+  padding-left: 20px;
+  width: 400px;
+}
+
+.todo-remove-button {
+  color: #ffdddd;
+  height: 50px;
+  width: 20px;
+  line-height: 50px;
+  font-weight: 100;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.todo-remove-button:hover {
+  color: #ff5555;
+}
+
+.todo-toggle__container {
+  display: block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.todo-toggle__container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.todo-toggle__checkmark {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 38px;
+  width: 38px;
+  padding-top: 1px;
+  padding-left: 1px;
+  background-color: #eee;
+}
+
+.todo-toggle__container:hover input ~ .todo-toggle__checkmark {
+  background-color: #ccc;
+}
+
+.todo-toggle__container input:checked ~ .todo-toggle__checkmark {
+  background-color: #2196F3;
+}
+
+.todo-toggle__checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.todo-toggle__container input:checked ~ .todo-toggle__checkmark:after {
+  display: block;
+}
+
+.todo-toggle__container .todo-toggle__checkmark:after {
+  left: 13px;
+  top: 5px;
+  width: 10px;
+  height: 20px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
