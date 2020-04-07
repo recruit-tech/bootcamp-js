@@ -74,10 +74,6 @@ const reducer = async (prevState, { type, payload }) => {
         return { ...prevState, error: err };
       }
     }
-    case CLEAR_ERROR: {
-      return { ...prevState, error: null };
-    }
-
     case REMOVE_TODO_ACTION_TYPE: {
       const url = "http://localhost:3000/todo/" + payload;
       try {
@@ -87,7 +83,9 @@ const reducer = async (prevState, { type, payload }) => {
         console.error("なにか問題が起きました %o", err);
       }
     }
-    
+    case CLEAR_ERROR: {
+      return { ...prevState, error: null };
+    }
     default: {
       throw new Error("unexpected action type: %o", { type, payload });
     }
