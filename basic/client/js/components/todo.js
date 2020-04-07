@@ -1,3 +1,5 @@
+import { removeTodoAction } from '../flux/index.js';
+import store from '../store.js';
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
@@ -9,10 +11,8 @@ class Todo {
   mount() {
     const removeButton = this.element.querySelector('.todo-remove-button');
     removeButton.addEventListener('click', () => {
-      const url = 'http://localhost:3000/todo/' + this.props.id;
-      fetch(url, { method: 'DELETE' })
-        .then(() => console.log('removed'))
-        .catch((err) => console.log('何か問題が起きました %o', err));
+      const action = removeTodoAction(this.props.id);
+      store.dispatch(action);
     });
   }
 
