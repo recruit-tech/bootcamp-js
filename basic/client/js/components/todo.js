@@ -6,14 +6,13 @@ class Todo {
     this.props = { id, name, done };
   }
 
+  import { removeTodoAction } from "../flux/index.js";
+  import store from "../store.js";
+
   mount() {
     const removeButton = this.element.querySelector(".todo-remove-button")
     removeButton.addEventListener("click", () => {
-      console.log("clicked at %o", this.props.id)
-      const url = "http://localhost:3000/todo/" + this.props.id
-      fetch(url, {method: "DELETE"})
-      .then(() => console.log("removed"))
-      .catch((err) => console.error("some error occured : %o", err))
+        store.dispatch(removeTodoAction(this.props.id));
     })
   }
 
