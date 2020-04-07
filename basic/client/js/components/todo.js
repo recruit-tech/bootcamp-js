@@ -17,7 +17,6 @@ class Todo {
 
     const checkButton = this.element.querySelector('.todo-toggle__checkmark')
     checkButton.addEventListener('click', ()=>{
-      this.props.done = !this.props.done;
       store.dispatch(checkTodoAction(this.props))
     })
   }
