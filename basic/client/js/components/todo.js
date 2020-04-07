@@ -17,7 +17,7 @@ class Todo {
         store.dispatch(removeTodoAction(this.props.id));
     })
 
-    const checkButton = this.element.querySelector(".todo-toggle__checkmark")
+    const checkButton = this.element.querySelector(".todo-toggle")
       checkButton.addEventListener("click", () => {
         store.dispatch(checkTodoAction(this.props.id));
       })

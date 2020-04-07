@@ -40,10 +40,10 @@ export const removeTodoAction = (todoId) => {
   };
 };
 
-const CHECK_TODO_ACTION_TYPE = "check todo";
+const DONE_TODO_ACTION_TYPE = "check todo";
 export const checkTodoAction = (todoId) => {
   return {
-    type: CHECK_TODO_ACTION_TYPE,
+    type: DONE_TODO_ACTION_TYPE,
     payload: todoId,
   }
 }
@@ -77,7 +77,7 @@ const reducer = async (prevState, { type, payload }) => {
       try {
         await fetch(url, {method: "DELETE"});
         const index = prevState.todoList.findIndex(
-          (todo) => todo.id === payload
+          (todo) => todo.id === payload.id
         );
         if (index === -1) return prevState;
         const nextTodoList = [...prevState.todoList];
@@ -89,10 +89,15 @@ const reducer = async (prevState, { type, payload }) => {
       }
       return prevState
     }
-    case CHECK_TODO_ACTION_TYPE: {
+    case DONE_TODO_ACTION_TYPE: {
       const url = "http://localhost:3000/todo/" + payload;
       try {
         await fetch(url, { method: "PATCH" });
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload
+        );
+        console.log(payload)
+        if (index === -1) return prevState;
       } catch(err) {
         console.error("some error occured %o", err)
       }
