@@ -67,9 +67,16 @@ const reducer = async (prevState, { type, payload }) => {
       const url = api + '/' + payload;
       try {
         await fetch(url, { method: "DELETE" });
-        // TODO: 画面の再描画 (APIの状態とクライアントの状態の同期)
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload
+        );
+        if(index === -1) return;
+        const nextTodoList = [... prevState.todoList];
+        nextTodoList.splice(index, 1);
+        return { todoList: nextTodoList, error: null };
       } catch (err) {
         console.error("なにか問題が起きました %o", err);
+        return { ...prevState, error: err };
       }
       return;
     }
