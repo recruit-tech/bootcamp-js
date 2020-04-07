@@ -71,18 +71,29 @@ const reducer = async (prevState, { type, payload }) => {
         return { ...prevState, error: err };
       }
     }
-    case CLEAR_ERROR: {
-      return { ...prevState, error: null };
-    }
     case REMOVE_TODO_ACTION_TYPE: {
       const url = "http://localhost:3000/todo/" + payload
       console.log(payload)
+      const config = {
+        method : "DELETE",
+      }
       try {
-          await fetch(url, config)
+        await fetch(url, config)
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload
+        );
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList];
+        nextTodoList.splice(index, 1);
+        return { todoList: nextTodoList, error: null }; 
       } catch (err) {
         console.log('err')
         return {...prevState , err}
       }
+    }
+
+    case CLEAR_ERROR: {
+      return { ...prevState, error: null };
     }
     default: {
       throw new Error("unexpected action type: %o", { type, payload });
