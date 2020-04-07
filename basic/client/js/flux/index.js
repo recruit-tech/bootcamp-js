@@ -36,7 +36,7 @@ const REMOVE_TODO_ACTION_TYPE = "remove todo from server";
 export const removeTodoAction = (todoId) => {
   return {
     type: REMOVE_TODO_ACTION_TYPE,
-    paylaod: todoId,
+    payload: todoId,
   };
 };
 
@@ -71,7 +71,7 @@ const reducer = async (prevState, { type, payload }) => {
         const index = prevState.todoList.findIndex(
           (todo) => todo.id === payload
         );
-        if (index === -1) return;
+        if (index === -1) return prevState;
         const nextTodoList = [...prevState.todoList];
         nextTodoList.splice(index, 1);
         return { todoList: nextTodoList, error: null}
