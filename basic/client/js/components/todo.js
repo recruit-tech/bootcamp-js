@@ -1,3 +1,6 @@
+import { removeTodoAction } from "../flux/index.js";
+import store from "../store.js";
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
@@ -5,9 +8,6 @@ class Todo {
     this.element.className = "todo-item";
     this.props = { id, name, done };
   }
-
-  import { removeTodoAction } from "../flux/index.js";
-  import store from "../store.js";
 
   mount() {
     const removeButton = this.element.querySelector(".todo-remove-button")

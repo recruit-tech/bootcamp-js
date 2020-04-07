@@ -65,7 +65,7 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case REMOVE_TODO_ACTION_TYPE: {
-      const url = "http://localhost:3000" + payload;
+      const url = "http://localhost:3000/todo/" + payload;
       try {
         await fetch(url, {method: "DELETE"});
       } catch (err) {
