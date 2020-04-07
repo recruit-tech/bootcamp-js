@@ -6,13 +6,6 @@ class Todo {
     this.props = { id, name, done };
   }
 
-  mount(){
-    const removeButton = this.element.querySelector(".todo-remove-button");
-    removeButton.addEventListener("click",()=>{
-      console.log("clicked!!!")
-    })
-  }
-
   render() {
     const { id, name, done } = this.props;
     this.element.innerHTML = `
@@ -30,7 +23,6 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     this.parent.appendChild(this.element);
-    this.mount();
   }
 }
 
