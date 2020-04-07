@@ -34,6 +34,12 @@ export const removeTodoAction = (todoId) => {
   }
 }
 
+const MARK_DONE_ACTION_TYPE = "mark done to store";
+export const markDoneAction = (todo) => ({
+  type: MARK_DONE_ACTION_TYPE,
+  payload: todo,
+})
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -75,13 +81,30 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case REMOVE_TODO_ACTION_TYPE: {
-      const url = 'http://localhost:3000/todo/' + payload;
+      const url = api + '/' + payload;
       try {
         await fetch(url, { method: 'DELETE' });
         console.log(prevState);
         const index = prevState.todoList.findIndex((todo => todo.id == payload));
         if (index === -1) return;
         const nextTodoList = [...prevState.todoList].splice(index, 1);
+        return { todoList: nextTodoList, error: null }
+      } catch (err) {
+        console.log('何か問題が起きました %o', err);
+        return { ...prevState, error: err }
+      }
+    }
+    case MARK_DONE_ACTION_TYPE: {
+      console.log(payload);
+      const body = JSON.stringify(payload);
+      const config = { method: "PATCH", body, headers };
+      const url = api + '/' + payload.id
+      try {
+        const resp = await fetch(url, config).then((d) => d.json());
+        const index = prevState.todoList.findIndex((todo => todo.id == payload.id));
+        if (index === -1) return;
+        var nextTodoList = [...prevState.todoList];
+        nextTodoList[index] = resp;
         return { todoList: nextTodoList, error: null }
       } catch (err) {
         console.log('何か問題が起きました %o', err);

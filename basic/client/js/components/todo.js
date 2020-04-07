@@ -1,4 +1,5 @@
 import { removeTodoAction } from '../flux/index.js';
+import { markDoneAction } from '../flux/index.js';
 import store from '../store.js';
 
 class Todo {
@@ -9,11 +10,17 @@ class Todo {
     this.props = { id, name, done };
   }
 
-  mount() {
+  mountRemoveButton() {
     const removeButton = this.element.querySelector('.todo-remove-button');
     removeButton.addEventListener('click', () => {
-      const action = removeTodoAction(this.props.id);
-      store.dispatch(action);
+      store.dispatch(removeTodoAction(this.props.id));
+    });
+  }
+
+  mountDoneButton() {
+    const doneButton = this.element.querySelector('.todo-toggle');
+    doneButton.addEventListener('click', () => {
+      store.dispatch(markDoneAction({ done: !this.props.done, id: this.props.id, name: this.props.name }))
     });
   }
 
@@ -34,7 +41,8 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     this.parent.appendChild(this.element);
-    this.mount();
+    this.mountRemoveButton();
+    this.mountDoneButton();
   }
 }
 
