@@ -1,4 +1,4 @@
-import { removeTodoAction } from '../flux/index.js';
+import { checkCompleteTodoAction, removeTodoAction } from '../flux/index.js';
 import store from '../store.js';
 
 class Todo {
@@ -14,7 +14,12 @@ class Todo {
     removeButtonElement.addEventListener('click', () => {
       store.dispatch(removeTodoAction(this.props.id))
     })
-  }
+
+    const checkBoxElement = this.element.querySelector('.todo-toggle')
+    checkBoxElement.addEventListener('click', () => {
+      store.dispatch(checkCompleteTodoAction(this.props.id))
+    })
+   }
 
   render() {
     const { id, name, done } = this.props;

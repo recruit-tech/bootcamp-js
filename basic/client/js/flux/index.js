@@ -26,6 +26,13 @@ export const createAddTodoAction = (todo) => ({
   payload: todo,
 });
 
+const CHECK_COMPLETE_TODO_ACTION_TYPE = "check todo";
+export const checkCompleteTodoAction = (todo) => ({
+  type: CHECK_COMPLETE_TODO_ACTION_TYPE,
+  payload: todo,
+});
+
+
 const REMOVE_TODO_ACTION_TYPE = 'remove todo from server';
 export const removeTodoAction = (todoId) => {
   return {
@@ -84,6 +91,34 @@ const reducer = async (prevState, { type, payload }) => {
         if (index === -1) return;
         const nextTodoList = [...prevState.todoList]
         nextTodoList.splice(index, 1)
+        return { todoList: nextTodoList, error: null }
+      } catch (err) {
+        console.error('Error: ', err)
+      }
+    }
+    case CHECK_COMPLETE_TODO_ACTION_TYPE: {
+
+      const url = 'http://localhost:3000/todo/' + payload
+
+      const index = prevState.todoList.findIndex((todo) => todo.id === payload)
+
+      if (index === -1) return;
+
+      const requestBody = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'Application/json'
+        },
+        body: JSON.stringify({
+          name: prevState.todoList[payload].name,
+          done: !prevState.todoList[payload].done
+        })
+      }
+
+      try {
+        const response = await fetch(url, requestBody)
+        const nextTodoList = [...prevState.todoList]
+        nextTodoList[payload].done = !nextTodoList[payload].done
         return { todoList: nextTodoList, error: null }
       } catch (err) {
         console.error('Error: ', err)
