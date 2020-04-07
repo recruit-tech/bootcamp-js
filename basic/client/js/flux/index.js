@@ -32,6 +32,12 @@ export const removeTodoAction = (todoId) => ({
   payload: todoId
 })
 
+const PATCH_TODO_ACTION_TYPE = "patch todo from server"
+export const patchTodoAction = (todo) => ({
+  type: PATCH_TODO_ACTION_TYPE,
+  payload: todo
+})
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -73,7 +79,7 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case REMOVE_TODO_ACTION_TYPE: {
-      const url = 'http://localhost:3000/todo/' + payload
+      const url = api + '/' + payload
       try{
         const resp = await fetch(url, { method: 'DELETE' })
         const index = prevState.todoList.findIndex(todo => todo.id === payload)
@@ -83,6 +89,21 @@ const reducer = async (prevState, { type, payload }) => {
         return { todoList: nextTodoList, error: null }
       } catch (err) {
         return {...prevState, error: err}
+      }
+    }
+    case PATCH_TODO_ACTION_TYPE: {
+      payload.done = !payload.done
+      const url = api + '/' + payload.id
+      const body =  JSON.stringify(payload)
+      try {
+        const resp = await fetch(url, { method: 'PATCH', body, headers })
+        const nextTodoList = [...prevState.todoList]
+        const targetTodo = nextTodoList.find(todo => todo.id === payload.id)
+        if(!targetTodo) return
+        targetTodo.done = !targetTodo.done
+        return { todoList: nextTodoList, error: null }
+      } catch (err) {
+        return { ...prevState, error: err };
       }
     }
     case CLEAR_ERROR: {

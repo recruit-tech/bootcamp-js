@@ -1,4 +1,4 @@
-import { removeTodoAction } from '../flux/index.js'
+import { removeTodoAction, patchTodoAction } from '../flux/index.js'
 import store from '../store.js'
 
 class Todo {
@@ -18,22 +18,7 @@ class Todo {
     const checkBox = this.element.querySelector('.todo-toggle')
     checkBox.addEventListener('click', () => {
       console.log('click toggle', this.props.id)
-      console.log(JSON.stringify({
-        name: this.props.name,
-        done: !this.props.done
-      }))
-      fetch('http://localhost:3000/todo/' + this.props.id, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          name: this.props.name,
-          done: !this.props.done
-        }),
-        headers: { 'Content-type': 'application/json; charset=UTF-8' }
-      }).then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
-      })
+      store.dispatch(patchTodoAction(this.props))
     })
   }
 
