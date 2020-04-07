@@ -1,5 +1,6 @@
 import { removeTodoAction } from '../flux/index.js';
 import store from '../store.js';
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
