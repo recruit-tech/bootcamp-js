@@ -71,6 +71,7 @@ const reducer = async (prevState, { type, payload }) => {
       } catch (err) {
         console.error("なにか問題が起きました %o", err);
       }
+      return;
     }
     case ADD_TODO_ACTION_TYPE: {
       const body = JSON.stringify(payload);
