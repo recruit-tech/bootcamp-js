@@ -26,6 +26,12 @@ export const createAddTodoAction = (todo) => ({
   payload: todo,
 });
 
+const DONE_TODO_ACTION_TYPE = "Check done todo";
+export const createDoneTodoAction = (todo) => ({
+  type: DONE_TODO_ACTION_TYPE,
+  payload: todo,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -63,6 +69,23 @@ const reducer = async (prevState, { type, payload }) => {
         const resp = await fetch(api, config).then((d) => d.json());
         return { todoList: [...prevState.todoList, resp], error: null };
       } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case DONE_TODO_ACTION_TYPE: {
+      const body = JSON.stringify(payload);
+      const config = { method: "PATCH", body, headers };
+      const url = "http://localhost:3000/todo/" + payload["id"];
+      try {
+        await fetch(url, config);
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload["id"]
+        );
+        const nextTodoList = [...prevState.todoList];
+        nextTodoList[index].done = !nextTodoList[index].done;
+        return { todoList: nextTodoList, error: null };
+      } catch (err) {
+        console.error("なにか問題が置きました %o", err);
         return { ...prevState, error: err };
       }
     }
