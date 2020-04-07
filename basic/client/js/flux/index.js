@@ -20,6 +20,11 @@ export const createFetchTodoListAction = () => ({
   paylaod: undefined,
 });
 
+const REMOVE_TODO_ACTION_TYPE = "hoge"
+export const  removeToDoAction = (todo)  => ({
+  type: REMOVE_TODO_ACTION_TYPE,
+  payload: todo,
+});
 const ADD_TODO_ACTION_TYPE = "A todo addition to store";
 export const createAddTodoAction = (todo) => ({
   type: ADD_TODO_ACTION_TYPE,
@@ -68,6 +73,16 @@ const reducer = async (prevState, { type, payload }) => {
     }
     case CLEAR_ERROR: {
       return { ...prevState, error: null };
+    }
+    case REMOVE_TODO_ACTION_TYPE: {
+      const url = "http://localhost:3000/todo/" + payload
+      console.log(payload)
+      try {
+          await fetch(api, config)
+      } catch (err) {
+        console.log('err')
+        return {...prevState , err}
+      }
     }
     default: {
       throw new Error("unexpected action type: %o", { type, payload });
