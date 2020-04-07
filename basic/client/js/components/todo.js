@@ -13,7 +13,11 @@ class Todo {
     const doneButton = this.element.querySelector(".todo-toggle");
     doneButton.addEventListener("click", () => {
       store.dispatch(
-        createDoneTodoAction({ id: this.props.id, done: this.props.done })
+        createDoneTodoAction({
+          id: this.props.id,
+          name: this.props.name,
+          done: !this.props.done,
+        })
       );
     });
   }
