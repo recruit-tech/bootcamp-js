@@ -68,9 +68,18 @@ const reducer = async (prevState, { type, payload }) => {
       const url = "http://localhost:3000/todo/" + payload;
       try {
         await fetch(url, {method: "DELETE"});
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload
+        );
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList];
+        nextTodoList.splice(index, 1);
+        return { todoList: nextTodoList, error: null}
       } catch (err) {
         console.error("some error occured %o", err)
+        return { ...prevState, error: err};
       }
+      return prevState
     }
     case ADD_TODO_ACTION_TYPE: {
       const body = JSON.stringify(payload);
