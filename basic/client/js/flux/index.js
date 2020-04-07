@@ -32,6 +32,14 @@ export const clearError = () => ({
   payload: undefined,
 });
 
+const REMOVE_TODO_ACTION_TYPE = "remove todo from server";
+export const removeTodoAction = (todoId) => {
+  return {
+    type: REMOVE_TODO_ACTION_TYPE,
+    payload: todoId,
+  };
+};
+
 /**
  * Store Creator
  */
@@ -69,6 +77,17 @@ const reducer = async (prevState, { type, payload }) => {
     case CLEAR_ERROR: {
       return { ...prevState, error: null };
     }
+
+    case REMOVE_TODO_ACTION_TYPE: {
+      const url = "http://localhost:3000/todo/" + payload;
+      try {
+        await fetch(url, { method: "DELETE" });
+        // TODO: 画面の再描画 (APIの状態とクライアントの状態の同期)
+      } catch (err) {
+        console.error("なにか問題が起きました %o", err);
+      }
+    }
+    
     default: {
       throw new Error("unexpected action type: %o", { type, payload });
     }
