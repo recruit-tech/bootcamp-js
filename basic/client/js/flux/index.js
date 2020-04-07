@@ -34,6 +34,14 @@ export const removeTodoAction = (todoId) => {
   }
 };
 
+const DONE_TODO_ACTION_TYPE = 'done status to todo';
+export const checkTodoAction = (todo) =>{
+  return {
+    type : DONE_TODO_ACTION_TYPE,
+    payload : todo,
+  }
+}
+
 
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
@@ -86,6 +94,24 @@ const reducer = async (prevState, { type, payload }) => {
         nextTodoList.splice(index, 1)
         return {todoList : nextTodoList, error : null}
       }catch(err){
+        console.error('Something wrong is happen. %o', err)
+        return {...prevStore, error : err}
+      }
+    }
+
+    case DONE_TODO_ACTION_TYPE: {
+      const url = 'http://localhost:3000/todo/' + payload.id
+      const body = JSON.stringify(payload);
+      try{
+        await fetch(url, {method: 'PATCH' , body: body, headers:headers})
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload.id)
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList]
+        nextTodoList[index].done = !prevState.todoList[index].done
+        return {todoList : nextTodoList, error : null}
+      }
+      catch(err){
         console.error('Something wrong is happen. %o', err)
         return {...prevStore, error : err}
       }
