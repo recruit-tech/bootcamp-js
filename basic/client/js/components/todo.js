@@ -1,4 +1,4 @@
-import { removeToDoAction } from "../flux/index.js";
+import { toggleToDoAction, removeToDoAction } from "../flux/index.js";
 import store from '../store.js'
 class Todo {
   constructor(parent, { id, name, done }) {
@@ -12,6 +12,16 @@ mount() {
     removeButton.addEventListener("click", ()=>{
       console.log("clicked,%o",this.props.id)
       store.dispatch(removeToDoAction(this.props.id))
+    })
+
+    const toggleButton = this.element.querySelector(".todo-toggle")
+    toggleButton.addEventListener("click", ()=>{
+      console.log("clicked toggel buttonm, %o", this.props.id)
+      store.dispatch(toggleToDoAction({
+        id: this.props.id, 
+        name: this.props.name,
+        done: !this.props.done,
+      }))
     })
     
   }
