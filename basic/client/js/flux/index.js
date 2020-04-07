@@ -75,10 +75,16 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case REMOVE_TODO_ACTION_TYPE: {
-      const url = 'http://localhost:3000/todo/'+ payload 
+      const url = 'http://localhost:3000/todo/' + payload
       try {
         const response = await fetch(url, { method: 'DELETE' })
+        const index = prevState.todoList.findIndex((todo) => todo.id === payload)
+
         //-- Update State
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList]
+        nextTodoList.splice(index, 1)
+        return { todoList: nextTodoList, error: null }
       } catch (err) {
         console.error('Error: ', err)
       }
