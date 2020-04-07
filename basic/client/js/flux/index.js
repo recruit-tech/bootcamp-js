@@ -78,7 +78,7 @@ const reducer = async (prevState, { type, payload }) => {
       const url = "http://localhost:3000/todo/" + payload
       console.log(payload)
       try {
-          await fetch(api, config)
+          await fetch(url, config)
       } catch (err) {
         console.log('err')
         return {...prevState , err}
