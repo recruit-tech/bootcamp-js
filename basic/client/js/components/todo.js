@@ -1,5 +1,5 @@
 import store from "../store.js"
-import { removeTodoAction } from "../flux/index.js";
+import { removeTodoAction, changeToggleState } from "../flux/index.js";
 
 class Todo {
   constructor(parent, { id, name, done }) {
@@ -13,6 +13,11 @@ class Todo {
     const removeButton = this.element.querySelector('.todo-remove-button');
     removeButton.addEventListener("click", ()=>{
       store.dispatch(removeTodoAction(this.props.id));
+    });
+
+    const todoToggle = this.element.querySelector('.todo-toggle');
+    todoToggle.addEventListener("click", ()=> {
+      store.dispatch(changeToggleState(this.props.id, this.props.name, this.props.done));
     });
   }
 

@@ -26,6 +26,12 @@ export const createAddTodoAction = (todo) => ({
   payload: todo,
 });
 
+const CHANGE_TOGGLE_STATE_TYPE = 'Change toggle state type';
+export const changeToggleState = (id, name, done) => ({
+ type: CHANGE_TOGGLE_STATE_TYPE, 
+ paylaod: {id, name, done},
+});
+
 const REMOVE_TODO_ACTION_TYPE = "remove todo from server";
 export const removeTodoAction = (todoId) => {
   return {
@@ -33,6 +39,7 @@ export const removeTodoAction = (todoId) => {
     payload: todoId,
   };
 };
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -78,7 +85,19 @@ const reducer = async (prevState, { type, payload }) => {
         console.error("なにか問題が起きました %o", err);
         return { ...prevState, error: err };
       }
-      return;
+    }
+
+    case CHANGE_TOGGLE_STATE_TYPE: {
+      try {
+        console.log(payload);
+        const body = JSON.stringify(payload);
+        const url = api + '/' + payload.id;
+        const resp = await fetch(url, { method: "PATCH", body}).then((d) => d.json());
+        return { todoList: resp.todoList, error: null };
+      } catch (err) {
+        console.error("なにか問題が起きました %o", err);
+        return { ...prevState, error: err };
+      }      
     }
     case ADD_TODO_ACTION_TYPE: {
       const body = JSON.stringify(payload);
