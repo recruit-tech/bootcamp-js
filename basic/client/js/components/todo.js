@@ -13,7 +13,7 @@ class Todo {
       const url = 'http://localhost:3000/todo/' + this.props.id;
       fetch(url, {method : 'DELETE'})
       .then(()=> console.log('removed'))
-      .catch(error)(()=> console.error(error))
+      .catch((err)=> console.error(err))
     })
   }
 
