@@ -17,7 +17,7 @@ class Dispatcher extends EventTarget {
 const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
 export const createFetchTodoListAction = () => ({
   type: FETCH_TODO_ACTION_TYPE,
-  paylaod: undefined,
+  payload: undefined,
 });
 
 const ADD_TODO_ACTION_TYPE = "A todo addition to store";
@@ -30,7 +30,7 @@ const REMOVE_TODO_ACTION_TYPE = "remove todo from server";
 export const removeTodoAction = (todoId) => {
   return {
     type: REMOVE_TODO_ACTION_TYPE,
-    paylaod: todoId,
+    payload: todoId,
   };
 };
 
@@ -79,9 +79,18 @@ const reducer = async (prevState, { type, payload }) => {
       const url = 'http://localhost:3000/todo/' + payload;
       try {
         await fetch(url, {method: 'DELETE'});
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload
+        );
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList];
+        nextTodoList.splice(index, 1);
+        return {todoList: nextTodoList, error: null};
+        // return {...prevState, error: err};
 
       } catch (err) {
         console.error('something went wrong %o', err);
+        return {...prevState, error:  err};
       }
     }
 
