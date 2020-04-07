@@ -94,7 +94,7 @@ const reducer = async (prevState, { type, payload }) => {
       try {
         await fetch(url, { method: "PATCH" });
         const index = prevState.todoList.findIndex(
-          (todo) => todo.id === payload
+          (todo) => todo.id === payload.id
         );
         console.log(payload)
         if (index === -1) return prevState;
