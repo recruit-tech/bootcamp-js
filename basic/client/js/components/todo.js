@@ -1,4 +1,4 @@
-import { removeTodoAction} from '../flux/index.js';
+import { removeTodoAction, checkTodoAction } from '../flux/index.js';
 import store from '../store.js';
 
 class Todo {
@@ -9,7 +9,7 @@ class Todo {
     this.props = { id, name, done };
   }
 
-  mount() {
+  mountRemove() {
     const removeButton = this.element.querySelector('.todo-remove-button');
     removeButton.addEventListener('click', () => {
       store.dispatch(removeTodoAction(this.props.id));
@@ -19,6 +19,14 @@ class Todo {
       //   .then(()=> console.log('removed'))
       //   .catch((err) => console.log('something wrong happened %o', err));
     });
+  }
+
+  mountCheck() {
+    const checkToggle = this.element.querySelector('.todo-toggle__checkmark');
+    checkToggle.addEventListener('click', () => {
+      store.dispatch(checkTodoAction({id: this.props.id, name: this.props.name, done: !this.props.done}));
+    });
+
   }
 
   render() {
@@ -38,7 +46,8 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     this.parent.appendChild(this.element);
-    this.mount();
+    this.mountRemove();
+    this.mountCheck();
   }
 }
 
