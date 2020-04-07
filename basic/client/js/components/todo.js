@@ -13,7 +13,7 @@ class Todo {
       fetch(url, { method: 'DELETE' })
         .then(() => console.log('removed'))
         .catch((err) => console.log('何か問題が起きました %o', err));
-    })
+    });
   }
 
   render() {

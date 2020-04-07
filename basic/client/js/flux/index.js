@@ -26,6 +26,14 @@ export const createAddTodoAction = (todo) => ({
   payload: todo,
 });
 
+const REMOVE_TODO_ACTION_TYPE = "remove todo from server";
+export const removeTodoAction = (todo) => {
+  return {
+    type: REMOVE_TODO_ACTION_TYPE,
+    payload: todoId,
+  }
+}
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
