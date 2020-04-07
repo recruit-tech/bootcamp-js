@@ -78,16 +78,15 @@ const reducer = async (prevState, { type, payload }) => {
       const url = 'http://localhost:3000/todo/' + payload;
       try {
         await fetch(url, { method: 'DELETE' });
+        console.log(prevState);
         const index = prevState.todoList.findIndex((todo => todo.id == payload));
-        if (index == 1) return;
-        const nextTodoList = [...prevState.todoList];
-        nextTodoList.splice(index, 1);
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList].splice(index, 1);
         return { todoList: nextTodoList, error: null }
       } catch (err) {
         console.log('何か問題が起きました %o', err);
         return { ...prevState, error: err }
       }
-
     }
     case CLEAR_ERROR: {
       return { ...prevState, error: null };
