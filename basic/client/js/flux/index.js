@@ -91,14 +91,14 @@ const reducer = async (prevState, { type, payload }) => {
       try {
         const body = JSON.stringify(payload);
         const url = api + '/' + payload.id;
-        const res = await fetch(url, { method: "PATCH", body}).then((d) => d.json());
+        const res = await fetch(url, { method: "PATCH", body, headers}).then((d) => d.json());
         const index = prevState.todoList.findIndex(
           (todo) => todo.id === res.id
         );
         const nextTodoList = [... prevState.todoList];
         nextTodoList[index].done = !nextTodoList[index].done;
         return { todoList: nextTodoList, error: null };
-        
+
       } catch (err) {
         console.error("なにか問題が起きました %o", err);
         return { ...prevState, error: err };

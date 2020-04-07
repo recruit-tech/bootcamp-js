@@ -17,7 +17,7 @@ class Todo {
 
     const todoToggle = this.element.querySelector('.todo-toggle');
     todoToggle.addEventListener("click", ()=> {
-      store.dispatch(changeToggleState(this.props.id, this.props.name, this.props.done));
+      store.dispatch(changeToggleState(this.props.id, this.props.name, true));
     });
   }
 
