@@ -40,6 +40,14 @@ export const removeTodoAction = (todoId) => {
   };
 };
 
+const CHECK_TODO_ACTION_TYPE = "check todo";
+export const checkTodoAction = (todoId) => {
+  return {
+    type: CHECK_TODO_ACTION_TYPE,
+    payload: todoId,
+  }
+}
+
 /**
  * Store Creator
  */
@@ -78,6 +86,15 @@ const reducer = async (prevState, { type, payload }) => {
       } catch (err) {
         console.error("some error occured %o", err)
         return { ...prevState, error: err};
+      }
+      return prevState
+    }
+    case CHECK_TODO_ACTION_TYPE: {
+      const url = "http://localhost:3000/todo/" + payload;
+      try {
+        await fetch(url, { method: "PATCH" });
+      } catch(err) {
+        console.error("some error occured %o", err)
       }
       return prevState
     }

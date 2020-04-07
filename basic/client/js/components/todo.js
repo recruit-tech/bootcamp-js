@@ -1,6 +1,8 @@
 import { removeTodoAction } from "../flux/index.js";
 import store from "../store.js";
 
+import {checkTodoAction } from "../flux/index.js";
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
@@ -17,12 +19,7 @@ class Todo {
 
     const checkButton = this.element.querySelector(".todo-toggle__checkmark")
       checkButton.addEventListener("click", () => {
-        console.log("checked!")
-        console.log("checked! %o",this.props.id)
-        const url = "http://localhost:3000/todo/" + this.props.id;
-        fetch(url, {method: "PATCH"})
-          .then(() => console.log("patched"))
-          .catch((err) => console.log("some error occured : %o", err));
+        store.dispatch(checkTodoAction(this.props.id));
       })
     }
 
