@@ -6,6 +6,17 @@ class Todo {
     this.props = { id, name, done };
   }
 
+  mount() {
+    const removeButton = this.element.querySelector(".todo-remove-button");
+    removeButton.addEventListener("click", () => {
+      console.log("clicked !!! %o", this.props.id);
+      const url = "http://localhost:3000/todo/" + this.props.id;
+      fetch(url, { method: "DELETE" })
+        .then(() => console.log("removed"))
+        .catch((err) => console.error("なにか問題が置きました %o", err));
+    });
+  }
+
   render() {
     const { id, name, done } = this.props;
     this.element.innerHTML = `
@@ -23,6 +34,7 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     this.parent.appendChild(this.element);
+    this.mount();
   }
 }
 
