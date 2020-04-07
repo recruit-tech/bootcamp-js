@@ -10,6 +10,10 @@ class Todo {
     const removeButton = this.element.querySelector('.todo-remove-button')
     removeButton.addEventListener('click', () =>{
       console.log(this.props.id)
+      const url = 'http://localhost:3000/todo/' + this.props.id;
+      fetch(url, {method : 'DELETE'})
+      .then(()=> console.log('removed'))
+      .catch(error)(()=> console.error(error))
     })
   }
 
