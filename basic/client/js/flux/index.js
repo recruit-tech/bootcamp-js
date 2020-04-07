@@ -40,6 +40,14 @@ export const removeTodoAction = (todoId) => {
   };
 };
 
+const UPDATE_TODO_ACTION_TYPE = "update todo from server";
+export const updateTodoAction = (todo) => {
+  return {
+    type: UPDATE_TODO_ACTION_TYPE,
+    payload: todo
+  }
+}
+
 /**
  * Store Creator
  */
@@ -94,6 +102,27 @@ const reducer = async (prevState, { type, payload }) => {
     }
     case CLEAR_ERROR: {
       return { ...prevState, error: null };
+    }
+    case UPDATE_TODO_ACTION_TYPE: {
+      const body = JSON.stringify(payload);
+      console.log("payload", payload);
+      const config = { method: "PATCH", body, headers };
+      const url = "http://localhost:3000/todo/" + payload.id;
+      try {
+        await fetch(url, config);
+        const index = prevState.todoList.findIndex(
+          (todo) => todo.id === payload.id
+        );
+        if (index === -1) return;
+        const nextTodoList = [...prevState.todoList];
+        nextTodoList[index] = prevState.todoList[index];
+        nextTodoList[index].done = payload.done;
+        return { ...prevState, error: null };
+      } catch (err) {
+        console.error("なにか問題が起きました %o", err);
+        // errを渡してあげるとエラー画面ができる
+        return { ...prevState, err};
+      }
     }
     default: {
       throw new Error("unexpected action type: %o", { type, payload });

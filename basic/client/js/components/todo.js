@@ -1,4 +1,4 @@
-import { removeTodoAction } from "../flux/index.js";
+import { removeTodoAction, updateTodoAction } from "../flux/index.js";
 import store from "../store.js";
 
 class Todo {
@@ -14,6 +14,13 @@ class Todo {
     removeButton.addEventListener('click', ()=>{
       // アクションを呼ぶ
       store.dispatch(removeTodoAction(this.props.id));
+    });
+    const checkBox = this.element.querySelector('.todo-toggle');
+    checkBox.addEventListener('change', (event)=>{
+      const payload = { ...this.props };
+      payload.done = event.target.checked;
+      console.log(payload.done);
+      store.dispatch(updateTodoAction(payload));
     });
   }
 
