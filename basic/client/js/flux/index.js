@@ -20,7 +20,7 @@ export const createFetchTodoListAction = () => ({
   paylaod: undefined,
 });
 
-const REMOVE_TODO_ACTION_TYPE = "hoge"
+const REMOVE_TODO_ACTION_TYPE = "Remove todo action from server and store"
 export const  removeToDoAction = (todo)  => ({
   type: REMOVE_TODO_ACTION_TYPE,
   payload: todo,
