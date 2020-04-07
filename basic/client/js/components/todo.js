@@ -14,7 +14,17 @@ class Todo {
     removeButton.addEventListener("click", () => {
         store.dispatch(removeTodoAction(this.props.id));
     })
-  }
+
+    const checkButton = this.element.querySelector(".todo-toggle__checkmark")
+      checkButton.addEventListener("click", () => {
+        console.log("checked!")
+        console.log("checked! %o",this.props.id)
+        const url = "http://localhost:3000/todo/" + this.props.id;
+        fetch(url, {method: "PATCH"})
+          .then(() => console.log("patched"))
+          .catch((err) => console.log("some error occured : %o", err));
+      })
+    }
 
   render() {
     const { id, name, done } = this.props;
