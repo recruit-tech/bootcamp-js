@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express"
 const router = express.Router();
 const todoList = [];
 
@@ -45,4 +45,4 @@ router.delete("/:id", (req, res, next) => {
   return res.status(204).send("done");
 });
 
-module.exports = router;
+export default router;
