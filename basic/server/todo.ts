@@ -13,7 +13,7 @@ interface Service{
   getItem() : TodoItem;
 }
 
-class Todo {
+class Todo implements Service {
   private _todoItem : TodoItem;
   constructor(initialTodo : TodoItem) {
     this._todoItem = initialTodo;
@@ -44,7 +44,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.patch("/:id", (req, res, next) => {
-  const id : number = parseInt(req.params.id, 10);
+  const id : number = parseInt(req.params.id, 10);  //こういうパースはよくない気がするなあ...ここでエラー吐かれるもんな...
   const todo : TodoItem | undefined = todoList.find(todo => todo.id == id);
   if (todo === undefined){
     // if undefined << because of no index
