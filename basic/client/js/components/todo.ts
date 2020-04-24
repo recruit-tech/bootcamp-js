@@ -1,8 +1,12 @@
 import { removeTodoAction, patchTodoAction } from '../flux/index.js'
 import store from '../store.js'
+import { TodoType } from '../type.js'
 
 class Todo {
-  constructor(parent, { id, name, done }) {
+  parent: Element
+  element: Element
+  props: TodoType
+  constructor(parent: Element, { id, name, done }: TodoType) {
     this.parent = parent;
     this.element = document.createElement("li");
     this.element.className = "todo-item";
@@ -11,15 +15,19 @@ class Todo {
 
   mount() {
     const removeButton = this.element.querySelector('.todo-remove-button')
-    removeButton.addEventListener('click', () => {
-      store.dispatch(removeTodoAction(this.props.id))
-    })
+    if(removeButton) {
+      removeButton.addEventListener('click', () => {
+        store.dispatch(removeTodoAction(this.props.id))
+      })
+    }
 
     const checkBox = this.element.querySelector('.todo-toggle')
-    checkBox.addEventListener('click', () => {
-      console.log('click toggle', this.props.id)
-      store.dispatch(patchTodoAction(this.props))
-    })
+    if(checkBox) {
+      checkBox.addEventListener('click', () => {
+        console.log('click toggle', this.props.id)
+        store.dispatch(patchTodoAction(this.props))
+      })
+    }
   }
 
   render() {

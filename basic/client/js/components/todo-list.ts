@@ -1,7 +1,14 @@
 import Todo from "./todo.js";
+import { TodoType } from '../type.js'
+
 
 class TodoList {
-  constructor(parent, { todoList }) {
+  parent: Element
+  element: Element
+  props: {
+    todoList: TodoType[]
+  }
+  constructor(parent: Element, { todoList }: { todoList: TodoType[] }) {
     this.parent = parent;
     this.element = document.createElement("ul");
     this.element.className = "todo-list";

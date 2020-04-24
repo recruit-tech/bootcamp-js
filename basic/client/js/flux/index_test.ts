@@ -10,7 +10,7 @@ function todo一覧を取得するアクションをdispatchしたときtodo一�
   const store = createStore(initialState);
   store.dispatch(createFetchTodoListAction());
   store.subscribe(state => {
-    console.assert(initialState !== state.todoList);
+    console.assert(initialState.todoList !== state.todoList);
   });
 }
 

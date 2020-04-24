@@ -1,3 +1,6 @@
+import { TodoType } from '../type.js'
+
+// ここで全部typeを定義すれば、全て行き渡る
 /**
  * Dispatcher
  */
@@ -6,7 +9,7 @@ class Dispatcher extends EventTarget {
     this.dispatchEvent(new CustomEvent("event"));
   }
 
-  subscribe(subscriber) {
+  subscribe(subscriber: () => void) {
     this.addEventListener("event", subscriber);
   }
 }
@@ -15,51 +18,79 @@ class Dispatcher extends EventTarget {
  * Action Creator and Action Types
  */
 const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
-export const createFetchTodoListAction = () => ({
+type FetchTodoAction = {
+  type: typeof FETCH_TODO_ACTION_TYPE
+  payload: undefined
+}
+export const createFetchTodoListAction:() => FetchTodoAction = () => ({
   type: FETCH_TODO_ACTION_TYPE,
-  paylaod: undefined,
+  payload: undefined,
 });
 
 const ADD_TODO_ACTION_TYPE = "A todo addition to store";
-export const createAddTodoAction = (todo) => ({
+type AddTodoAction = {
+  type: typeof ADD_TODO_ACTION_TYPE,
+  payload: { name: string }
+}
+export const createAddTodoAction: (todo: { name: string }) => AddTodoAction = (todo) => ({
   type: ADD_TODO_ACTION_TYPE,
   payload: todo,
 });
 
 const REMOVE_TODO_ACTION_TYPE = "remove todo from server"
-export const removeTodoAction = (todoId) => ({
+type RemoveTodoAction = {
+  type: typeof REMOVE_TODO_ACTION_TYPE,
+  payload: number
+}
+export const removeTodoAction: (todoId: number) => RemoveTodoAction = (todoId) => ({
   type: REMOVE_TODO_ACTION_TYPE,
   payload: todoId
 })
 
 const PATCH_TODO_ACTION_TYPE = "patch todo from server"
-export const patchTodoAction = (todo) => ({
+type PatchTodoAction = {
+  type: typeof PATCH_TODO_ACTION_TYPE,
+  payload: TodoType
+}
+export const patchTodoAction: (todo: TodoType) => PatchTodoAction = (todo) => ({
   type: PATCH_TODO_ACTION_TYPE,
   payload: todo
 })
 
 const CLEAR_ERROR = "Clear error from state";
-export const clearError = () => ({
+type ClearError = {
+  type: typeof CLEAR_ERROR,
+  payload: undefined
+}
+export const clearError: () => ClearError = () => ({
   type: CLEAR_ERROR,
   payload: undefined,
 });
 
+type Actions = FetchTodoAction | AddTodoAction | RemoveTodoAction | PatchTodoAction | ClearError
+
 /**
  * Store Creator
  */
+
+ type State = {
+   todoList: TodoType[],
+   error?: any
+ }
+
 const api = "http://localhost:3000/todo";
 
-const defaultState = {
+const defaultState: State  = {
   todoList: [],
-  error: null,
+  error: undefined,
 };
 
 const headers = {
   "Content-Type": "application/json; charset=utf-8",
 };
 
-const reducer = async (prevState, { type, payload }) => {
-  switch (type) {
+const reducer = async (prevState: State, action: Actions) => {
+  switch (action.type) {
     case FETCH_TODO_ACTION_TYPE: {
       try {
         const resp = await fetch(api).then((d) => d.json());
@@ -69,7 +100,7 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case ADD_TODO_ACTION_TYPE: {
-      const body = JSON.stringify(payload);
+      const body = JSON.stringify(action.payload);
       const config = { method: "POST", body, headers };
       try {
         const resp = await fetch(api, config).then((d) => d.json());
@@ -79,11 +110,12 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case REMOVE_TODO_ACTION_TYPE: {
-      const url = api + '/' + payload
+      const id = action.payload
+      const url = api + '/' + action.payload
       try{
-        const resp = await fetch(url, { method: 'DELETE' })
-        const index = prevState.todoList.findIndex(todo => todo.id === payload)
-        if(index === -1) return
+        const resp = await fetch(url, { method: 'DELETE' }).then((d) => d.json());
+        const index = prevState.todoList.findIndex(todo => todo.id === id)
+        if(index === -1) return prevState
         const nextTodoList = [...prevState.todoList]
         nextTodoList.splice(index, 1)
         return { todoList: nextTodoList, error: null }
@@ -92,15 +124,18 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case PATCH_TODO_ACTION_TYPE: {
-      payload.done = !payload.done
-      const url = api + '/' + payload.id
-      const body =  JSON.stringify(payload)
+      const { id, ...body } = action.payload
+      action.payload.done = !action.payload.done
       try {
-        const resp = await fetch(url, { method: 'PATCH', body, headers })
-        const nextTodoList = [...prevState.todoList]
-        const targetTodo = nextTodoList.find(todo => todo.id === payload.id)
-        if(!targetTodo) return
-        targetTodo.done = !targetTodo.done
+        const resp = await fetch(`${api}/${id}`, { 
+          method: 'PATCH', 
+          body: JSON.stringify(action.payload), 
+          headers
+        }).then((d) => d.json())
+        const idx = prevState.todoList.findIndex(todo => todo.id === id)
+        if(idx === -1) return prevState  
+        const nextTodoList = prevState.todoList.concat();
+        nextTodoList[idx] = resp;
         return { todoList: nextTodoList, error: null }
       } catch (err) {
         return { ...prevState, error: err };
@@ -110,7 +145,7 @@ const reducer = async (prevState, { type, payload }) => {
       return { ...prevState, error: null };
     }
     default: {
-      throw new Error("unexpected action type: %o", { type, payload });
+      throw new Error("unexpected action type: %o");
     }
   }
 };
@@ -119,16 +154,16 @@ export function createStore(initialState = defaultState) {
   const dispatcher = new Dispatcher();
   let state = initialState;
 
-  const dispatch = async ({ type, payload }) => {
-    console.group(type);
+  const dispatch = async (action: Actions) => {
+    console.group(action.type);
     console.log("prev", state);
-    state = await reducer(state, { type, payload });
+    state = await reducer(state, action);
     console.log("next", state);
     console.groupEnd();
     dispatcher.dispatch();
   };
 
-  const subscribe = (subscriber) => {
+  const subscribe = (subscriber: (state: State) => void) => {
     dispatcher.subscribe(() => subscriber(state));
   };
 

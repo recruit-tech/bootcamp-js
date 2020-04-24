@@ -2,9 +2,15 @@ import store from "../store.js";
 import { createAddTodoAction } from "../flux/index.js";
 
 class TodoForm {
+  button: HTMLButtonElement
+  form: HTMLInputElement
   constructor() {
-    this.button = document.querySelector(".todo-form__submit");
-    this.form = document.querySelector(".todo-form__input");
+    const button = document.querySelector(".todo-form__submit");
+    const form = document.querySelector(".todo-form__input");
+    if(!button) throw new Error('no button')
+    if(!form) throw new Error('no form')
+    this.button = button as HTMLButtonElement
+    this.form = form as HTMLInputElement
   }
 
   mount() {
