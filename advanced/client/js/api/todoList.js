@@ -1,7 +1,7 @@
 const FETCH_TODO_LIST = "http://localhost:3000/todo";
 const CREATE_TODO = "http://localhost:3000/todo";
 
-export const fethcTodoList = async () => {
+export const fetchTodoList = async () => {
     const todoListResp = await fetch(FETCH_TODO_LIST);
     return todoListResp.json()
 }
