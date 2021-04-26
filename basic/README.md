@@ -1,7 +1,7 @@
 # 開発環境 構築 (1回実行すればよいです)
 
 ```bash
-$ cd serevr && npm i
+$ cd server && npm i
 ```
 
 # 開発環境の起動
@@ -18,8 +18,8 @@ $ cd server && npm run server
 
 あなたは，TODO管理アプリ 開発チームに参画しました．
 しかし，前任の開発者はすでにいません．
-残されたのは，開発途中のアプリとドキュメント，残タスクリストです
-残されたドキュメントと作成途中のコードを読み解き，TODO管理アプリを完成させよう
+残されたのは，開発途中のアプリとドキュメント，残タスクリストです．
+残されたドキュメントと作成途中のコードを読み解き，TODO管理アプリを完成させよう．
 
 ## 残されたドキュメント 1. アーキテクチャ
 
@@ -73,7 +73,7 @@ $ curl -X POST http://localhost:3000/todo -H 'Content-Type: application/json' -d
 ![](./.meta/patch.gif)
 
 - [ ] `js/components/todo.js` を編集して，check ボタンに適当なイベントハンドラを登録しよう
-- [ ] TODO を 更新するという action cretor を実装しよう
+- [ ] TODO を 更新するという action creator を実装しよう
 - [ ] check ボタンが押されたら該当の action を dispatch しよう
 - [ ] reducer 関数に action 発生時の処理を追加しよう
 - [ ] API と接続しよう
@@ -83,7 +83,7 @@ $ curl -X POST http://localhost:3000/todo -H 'Content-Type: application/json' -d
 ![](./.meta/delete.gif)
 
 - [ ] `js/components/todo.js` を編集して，削除 ボタンに適当なイベントハンドラを登録しよう
-- [ ] TODO を 更新するという action cretor を実装しよう
+- [ ] TODO を 更新するという action creator を実装しよう
 - [ ] check ボタンが押されたら該当の action を dispatch しよう
 - [ ] reducer 関数に action 発生時の処理を追加しよう
 - [ ] API と接続しよう
