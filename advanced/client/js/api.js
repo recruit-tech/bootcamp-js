@@ -9,7 +9,11 @@ const toJson = async (res) => {
   }
 };
 
+/**
+ * todoを取得
+ * @return {Array}
+ */
 export const getAllTodo = async () => {
   const resp = await fetch(`${API_ENDPOINT}/todo`);
-  return toJson(resp);
+  return toJson(resp).todoList;
 };
