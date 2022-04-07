@@ -33,13 +33,13 @@ const insertTodo = (dom, todo) => {
         />
         <span class="todo-toggle__checkmark"></span>
       </label>
-      <div class="todo-name">${todo.name}</div>
+      <div class="todo-name"></div>
       <div data-todo-id="${todo.id}" class="todo-remove-button">x</div>
   `
-
   const li = document.createElement('li')
   li.className = "todo-item";
   li.innerHTML = template;
+  li.getElementsByClassName("todo-name")[0].innerText = todo.name
   dom.appendChild(li)
 }
 
