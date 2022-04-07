@@ -11,10 +11,28 @@ const toJson = async (res) => {
 
 /**
  * todoを取得
- * @return {Array}
+ * @return {Promise<Array>}
  */
 export const getAllTodo = async () => {
   const resp = await fetch(`${API_ENDPOINT}/todo`);
   const todo = await toJson(resp);
   return todo.todoList;
+};
+
+/**
+ * todoを取得
+ * @return {Promise<any>}
+ */
+export const createTodo = async (name) => {
+  const resp = await fetch(`${API_ENDPOINT}/todo`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+    }),
+  });
+  const newTodo = await toJson(resp);
+  return newTodo;
 };

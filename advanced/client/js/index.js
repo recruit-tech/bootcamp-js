@@ -1,14 +1,27 @@
-import { getAllTodo } from "./api.js";
+import { getAllTodo, createTodo } from "./api.js";
 
 const main = async () => {
   const todo = await getAllTodo();
-
   const ulElement = document.getElementsByClassName("todos")[0];
   todo.map((t) => {
     const { id, name, done } = t;
-    console.log(id, name, done);
-    const liElement = makeTodoItem(id, name, done);
+    const liElement = makeTodoElement(id, name, done);
     ulElement.appendChild(liElement);
+  });
+
+  // submitイベント
+  const submitButton = document.getElementById("submit-button");
+  submitButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const inputText = document.getElementById("name").value;
+
+    if (inputText === "") return;
+
+    const newTodoElement = await addTodo(inputText);
+    document.getElementsByClassName("todos")[0].appendChild(newTodoElement);
+    document.getElementById("name").value = "";
+
+    return;
   });
 };
 
@@ -16,7 +29,7 @@ const main = async () => {
  * todoを取得
  * @return {HTMLElement}
  */
-const makeTodoItem = (id, todo_name, done) => {
+const makeTodoElement = (id, todo_name, done) => {
   const liElement = document.createElement("li");
   liElement.className = "todo-item";
 
@@ -36,6 +49,16 @@ const makeTodoItem = (id, todo_name, done) => {
     `;
 
   return liElement;
+};
+
+/**
+ * todoを作成
+ * @return {HTMLElement}
+ */
+const addTodo = async (new_todo_name) => {
+  const newTodo = await createTodo(new_todo_name);
+  const { id, name, done } = newTodo;
+  return makeTodoElement(id, name, done);
 };
 
 main();

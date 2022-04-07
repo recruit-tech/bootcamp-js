@@ -13,7 +13,7 @@ class Todo {
     return {
       id: this.id,
       name: this.name,
-      done: this.done
+      done: this.done,
     };
   }
 }
@@ -22,6 +22,7 @@ router.post("/", (req, res, next) => {
   const id = todoList.length ? todoList[todoList.length - 1].id + 1 : 0;
   const item = new Todo(id, req.body.name, false);
   todoList.push(item);
+  console.log(item);
   return res.status(201).send(item);
 });
 
@@ -31,7 +32,7 @@ router.get("/", (req, res, next) => {
 
 router.patch("/:id", (req, res, next) => {
   const id = req.params.id;
-  const todo = todoList.find(todo => todo.id == id);
+  const todo = todoList.find((todo) => todo.id == id);
   const { name, done } = req.body;
   todo.name = name;
   todo.done = done;
@@ -40,7 +41,7 @@ router.patch("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
   const id = req.params.id;
-  const index = todoList.findIndex(todo => todo.id == id);
+  const index = todoList.findIndex((todo) => todo.id == id);
   todoList.splice(index, 1);
   return res.status(204).send("done");
 });
