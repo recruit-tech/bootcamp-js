@@ -12,8 +12,9 @@ class TodoForm {
     // ここに 作成ボタンが押されたら todo を作成するような処理を追記する
     this.button.addEventListener("click", function (event) {
       console.log("clicked!");
-      store.dispatch(createAddTodoAction('todo name'));
+      const name = document.querySelector(".todo-form__input").value;
       event.preventDefault();
+      store.dispatch(createAddTodoAction(name));
     });
   }
 }
