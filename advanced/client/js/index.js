@@ -5,10 +5,13 @@ const main = async () => {
   const todo = await getAllTodo();
   // console.log(todo);
 
+  const ulElement = document.getElementsByClassName("todos")[0];
   todo.map((t) => {
     const { id, name, done } = t;
     console.log(id, name, done);
-    console.log(makeTodoItem(id, name, done));
+    // console.log(makeTodoItem(id, name, done));
+    const liElement = makeTodoItem(id, name, done);
+    ulElement.appendChild(liElement);
   });
 };
 
@@ -46,6 +49,7 @@ const makeTodoItem = (id, todo_name, done) => {
   const divRemoveButton = document.createElement("div");
   divRemoveButton.className = "todo-remove-button";
   divRemoveButton.setAttribute("data-todo-id", String(id));
+  divRemoveButton.textContent = "x";
 
   liElement.appendChild(labelElement);
   liElement.appendChild(divTodoNameElement);
