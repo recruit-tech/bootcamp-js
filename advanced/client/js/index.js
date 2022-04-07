@@ -57,7 +57,6 @@ const makeTodoElement = (id, todo_name, done) => {
  */
 const addTodo = async (new_todo_name) => {
   const newTodo = await createTodo(new_todo_name);
-  console.log(newTodo);
   const { id, name, done } = newTodo;
   return makeTodoElement(id, name, done);
 };
