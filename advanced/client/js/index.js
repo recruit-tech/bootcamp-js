@@ -2,27 +2,26 @@ import { getAllTodo, createTodo } from "./api.js";
 
 const main = async () => {
   const todo = await getAllTodo();
-
   const ulElement = document.getElementsByClassName("todos")[0];
   todo.map((t) => {
     const { id, name, done } = t;
-    console.log(id, name, done);
     const liElement = makeTodoElement(id, name, done);
     ulElement.appendChild(liElement);
   });
 
   // submitイベント
   const submitButton = document.getElementById("submit-button");
-  submitButton.addEventListener("click", (e) => {
-    console.log("click!");
+  submitButton.addEventListener("click", async (e) => {
     e.preventDefault();
     const inputText = document.getElementById("name").value;
-    console.log({ inputText });
 
     if (inputText === "") return;
 
-    console.log("make!");
-    createTodo(inputText);
+    const newTodoElement = await addTodo(inputText);
+    document.getElementsByClassName("todos")[0].appendChild(newTodoElement);
+    document.getElementById("name").value = "";
+
+    return;
   });
 };
 
@@ -56,8 +55,11 @@ const makeTodoElement = (id, todo_name, done) => {
  * todoを作成
  * @return {HTMLElement}
  */
-const AddTodo = (new_todo_name) => {
-  createTodo(new_todo_name);
+const addTodo = async (new_todo_name) => {
+  const newTodo = await createTodo(new_todo_name);
+  console.log(newTodo);
+  const { id, name, done } = newTodo;
+  return makeTodoElement(id, name, done);
 };
 
 main();

@@ -11,7 +11,7 @@ const toJson = async (res) => {
 
 /**
  * todoを取得
- * @return {Array}
+ * @return {Promise<Array>}
  */
 export const getAllTodo = async () => {
   const resp = await fetch(`${API_ENDPOINT}/todo`);
@@ -21,7 +21,7 @@ export const getAllTodo = async () => {
 
 /**
  * todoを取得
- * @return {Array}
+ * @return {Promise<any>}
  */
 export const createTodo = async (name) => {
   const resp = await fetch(`${API_ENDPOINT}/todo`, {
