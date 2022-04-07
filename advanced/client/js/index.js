@@ -11,7 +11,19 @@ const main = async () => {
     ulElement.appendChild(liElement);
   });
 
-  AddTodo("test");
+  // submitイベント
+  const submitButton = document.getElementById("submit-button");
+  submitButton.addEventListener("click", (e) => {
+    console.log("click!");
+    e.preventDefault();
+    const inputText = document.getElementById("name").value;
+    console.log({ inputText });
+
+    if (inputText === "") return;
+
+    console.log("make!");
+    createTodo(inputText);
+  });
 };
 
 /**
