@@ -15,5 +15,6 @@ const toJson = async (res) => {
  */
 export const getAllTodo = async () => {
   const resp = await fetch(`${API_ENDPOINT}/todo`);
-  return toJson(resp).todoList;
+  const todo = await toJson(resp);
+  return todo.todoList;
 };
