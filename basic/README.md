@@ -11,7 +11,7 @@ $ cd server && npm i
 $ cd client && bash run.bash
 
 # terminal 2
-$ cd server && npm run 
+$ cd server && npm run start
 ```
 
 # 開発途中のTODO管理アプリを完成せよ
