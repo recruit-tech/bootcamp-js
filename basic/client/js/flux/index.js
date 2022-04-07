@@ -20,6 +20,12 @@ export const createFetchTodoListAction = () => ({
   paylaod: undefined,
 });
 
+const ADD_TODO_ACTION_TYPE = "Add a todo";
+export const createAddTodoAction = (name) => ({
+  type: ADD_TODO_ACTION_TYPE,
+  paylaod: name,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -51,6 +57,11 @@ const reducer = async (prevState, { type, payload }) => {
       }
     }
     case CLEAR_ERROR: {
+      return { ...prevState, error: null };
+    }
+    case ADD_TODO_ACTION_TYPE: {
+      console.log("ADD_TODO_ACTION_TYPE");
+      console.log(payload);
       return { ...prevState, error: null };
     }
     default: {
