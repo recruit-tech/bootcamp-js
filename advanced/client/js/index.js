@@ -1,13 +1,7 @@
-import { getAllTodo, createTodo } from "./api.js";
+import { getAllTodo, createTodo, updateTodo } from "./api.js";
 
 const main = async () => {
-  const todo = await getAllTodo();
-  const ulElement = document.getElementsByClassName("todos")[0];
-  todo.map((t) => {
-    const { id, name, done } = t;
-    const liElement = makeTodoElement(id, name, done);
-    ulElement.appendChild(liElement);
-  });
+  await initTodo();
 
   // submitイベント
   const submitButton = document.getElementById("submit-button");
@@ -17,8 +11,8 @@ const main = async () => {
 
     if (inputText === "") return;
 
-    const newTodoElement = await addTodo(inputText);
-    document.getElementsByClassName("todos")[0].appendChild(newTodoElement);
+    await createTodo(inputText);
+    await initTodo();
     document.getElementById("name").value = "";
 
     return;
@@ -52,13 +46,23 @@ const makeTodoElement = (id, todo_name, done) => {
 };
 
 /**
- * todoを作成
- * @return {HTMLElement}
+ * todoを初期化
  */
-const addTodo = async (new_todo_name) => {
-  const newTodo = await createTodo(new_todo_name);
-  const { id, name, done } = newTodo;
-  return makeTodoElement(id, name, done);
+const initTodo = async () => {
+  const ulElement = document.getElementsByClassName("todos")[0];
+  ulElement.innerHTML = "";
+  const todo = await getAllTodo();
+  todo.map((t) => {
+    const { id, name, done } = t;
+    const liElement = makeTodoElement(id, name, done);
+    ulElement.appendChild(liElement);
+
+    const inputElement = liElement.firstElementChild.firstElementChild;
+    inputElement.addEventListener("change", async (e) => {
+      const newDone = e.target.checked;
+      await updateTodo(name, id, newDone);
+    });
+  });
 };
 
 main();
