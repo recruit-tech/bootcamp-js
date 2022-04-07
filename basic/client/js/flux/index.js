@@ -17,7 +17,7 @@ class Dispatcher extends EventTarget {
 const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
 export const createFetchTodoListAction = () => ({
   type: FETCH_TODO_ACTION_TYPE,
-  paylaod: undefined,
+  payload: undefined,
 });
 
 const CLEAR_ERROR = "Clear error from state";
