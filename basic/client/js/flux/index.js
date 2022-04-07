@@ -1,3 +1,5 @@
+import Todo from "../components/todo.js";
+
 /**
  * Dispatcher
  */
@@ -62,7 +64,8 @@ const reducer = async (prevState, { type, payload }) => {
     case ADD_TODO_ACTION_TYPE: {
       console.log("ADD_TODO_ACTION_TYPE");
       console.log(payload);
-      prevState.todoList.push(payload);
+      const newTodo = {id: 0, name: payload, done: false};
+      prevState.todoList.push(newTodo);
       return { ...prevState, error: null };
     }
     default: {
