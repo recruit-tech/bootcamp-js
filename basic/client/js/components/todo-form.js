@@ -13,6 +13,7 @@ class TodoForm {
     this.button.addEventListener("click", function (event) {
       console.log("clicked!");
       const name = document.querySelector(".todo-form__input").value;
+      console.log(`todo name at listener: ${name}`)
       event.preventDefault();
       store.dispatch(createAddTodoAction(name));
     });
