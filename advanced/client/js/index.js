@@ -1,4 +1,4 @@
-import { getAllTodo } from "./api.js";
+import { getAllTodo, createTodo } from "./api.js";
 
 const main = async () => {
   const todo = await getAllTodo();
@@ -7,16 +7,18 @@ const main = async () => {
   todo.map((t) => {
     const { id, name, done } = t;
     console.log(id, name, done);
-    const liElement = makeTodoItem(id, name, done);
+    const liElement = makeTodoElement(id, name, done);
     ulElement.appendChild(liElement);
   });
+
+  AddTodo("test");
 };
 
 /**
  * todoを取得
  * @return {HTMLElement}
  */
-const makeTodoItem = (id, todo_name, done) => {
+const makeTodoElement = (id, todo_name, done) => {
   const liElement = document.createElement("li");
   liElement.className = "todo-item";
 
@@ -36,6 +38,14 @@ const makeTodoItem = (id, todo_name, done) => {
     `;
 
   return liElement;
+};
+
+/**
+ * todoを作成
+ * @return {HTMLElement}
+ */
+const AddTodo = (new_todo_name) => {
+  createTodo(new_todo_name);
 };
 
 main();
