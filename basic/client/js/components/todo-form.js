@@ -7,6 +7,9 @@ class TodoForm {
   mount() {
     // TODO:
     // ここに 作成ボタンが押されたら todo を作成するような処理を追記する
+    this.button.addEventListener("click", function (event) {
+      console.log("clicked!");
+    });
   }
 }
 
