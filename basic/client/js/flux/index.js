@@ -28,6 +28,12 @@ export const createAddTodoAction = (name) => ({
   payload: name,
 });
 
+const UPDATE_TODO_ACTION_TYPE = "Togle isDone of a todo";
+export const createUpdateTodoAction = (todo) => ({
+  type: UPDATE_TODO_ACTION_TYPE,
+  payload: todo,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -78,6 +84,11 @@ const reducer = async (prevState, { type, payload }) => {
       } catch (err) {
         return { ...prevState, error: err };
       }
+    }
+    case UPDATE_TODO_ACTION_TYPE: {
+      const updatedTodo = payload;
+      console.log(`udpate todo: ${updatedTodo}`);
+      return { ...prevState, error: err };
     }
     default: {
       throw new Error("unexpected action type: %o", { type, payload });

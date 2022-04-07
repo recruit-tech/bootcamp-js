@@ -1,3 +1,7 @@
+import { createUpdateTodoAction } from "../flux/index.js";
+// import store from "../store.js";
+// import文で、index.js:99 Uncaught ReferenceError: Cannot access 'defaultState' before initialization
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
@@ -9,6 +13,12 @@ class Todo {
     if (this.mounted) return;
     // TODO: ここにTODOの削除ボタンが押されたときの処理を追記
     // TODO: ここにTODOのチェックボックスが押されたときの処理を追記
+
+    const checkbox = this.parent.querySelector(".todo-toggle");
+    checkbox.addEventListener("change", function (event) {
+      console.log(checkbox);
+      console.log("changed!");
+    });
     this.mounted = true;
   }
 
