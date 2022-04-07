@@ -1,5 +1,44 @@
-const main = () => {
-  console.log("ここにロジックを記述");
+import { getAllTodo } from "./api.js";
+
+const main = async () => {
+  // todoを取得して描画
+  const todo = await getAllTodo();
+  // console.log(todo);
+
+  const ulElement = document.getElementsByClassName("todos")[0];
+  todo.map((t) => {
+    const { id, name, done } = t;
+    console.log(id, name, done);
+    // console.log(makeTodoItem(id, name, done));
+    const liElement = makeTodoItem(id, name, done);
+    ulElement.appendChild(liElement);
+  });
+};
+
+/**
+ * todoを取得
+ * @return {HTMLElement}
+ */
+const makeTodoItem = (id, todo_name, done) => {
+  const liElement = document.createElement("li");
+  liElement.className = "todo-item";
+
+  liElement.innerHTML = `
+      <label class="todo-toggle__container">
+        <input
+          data-todo-id="${id}"
+          type="checkbox"
+          class="todo-toggle"
+          value="checked"
+          ${done ? "checked" : ""}
+        />
+        <span class="todo-toggle__checkmark"></span>
+      </label>
+      <div class="todo-name">${todo_name}</div>
+      <div data-todo-id="${id}" class="todo-remove-button">x</div>
+    `;
+
+  return liElement;
 };
 
 main();
