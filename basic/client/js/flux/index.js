@@ -17,13 +17,13 @@ class Dispatcher extends EventTarget {
 const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
 export const createFetchTodoListAction = () => ({
   type: FETCH_TODO_ACTION_TYPE,
-  paylaod: undefined,
+  payload: undefined,
 });
 
 const ADD_TODO_ACTION_TYPE = "Add a todo";
 export const createAddTodoAction = (name) => ({
   type: ADD_TODO_ACTION_TYPE,
-  paylaod: name,
+  payload: name,
 });
 
 const CLEAR_ERROR = "Clear error from state";
