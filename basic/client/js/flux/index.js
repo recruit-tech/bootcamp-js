@@ -62,6 +62,7 @@ const reducer = async (prevState, { type, payload }) => {
     case ADD_TODO_ACTION_TYPE: {
       console.log("ADD_TODO_ACTION_TYPE");
       console.log(payload);
+      prevState.todoList.push(payload);
       return { ...prevState, error: null };
     }
     default: {
