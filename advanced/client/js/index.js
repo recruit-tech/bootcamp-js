@@ -1,15 +1,12 @@
 import { getAllTodo } from "./api.js";
 
 const main = async () => {
-  // todoを取得して描画
   const todo = await getAllTodo();
-  // console.log(todo);
 
   const ulElement = document.getElementsByClassName("todos")[0];
   todo.map((t) => {
     const { id, name, done } = t;
     console.log(id, name, done);
-    // console.log(makeTodoItem(id, name, done));
     const liElement = makeTodoItem(id, name, done);
     ulElement.appendChild(liElement);
   });
